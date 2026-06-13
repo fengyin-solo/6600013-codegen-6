@@ -32,11 +32,18 @@ export default function Sidebar() {
 
       {/* Theme */}
       <div>
-        <label className="text-xs text-gray-400 block mb-1">颜色主题</label>
+        <div className="flex items-center justify-between mb-1">
+          <label className="text-xs text-gray-400">颜色主题</label>
+          <button onClick={() => store.togglePaletteLock()}
+            className={`flex items-center gap-1 px-2 py-0.5 rounded text-xs ${store.paletteLocked ? 'bg-amber-600 text-white' : 'bg-gray-700 text-gray-400 hover:bg-gray-600'}`}
+            title={store.paletteLocked ? '解锁配色' : '锁定配色'}>
+            {store.paletteLocked ? '🔒 已锁定' : '🔓 未锁定'}
+          </button>
+        </div>
         <div className="grid grid-cols-2 gap-2">
           {THEMES.map(t => (
             <button key={t.id} onClick={() => store.setTheme(t.id)}
-              className="flex items-center gap-1 px-2 py-1 rounded text-xs bg-gray-700 hover:bg-gray-600">
+              className={`flex items-center gap-1 px-2 py-1 rounded text-xs ${store.paletteLocked ? 'bg-gray-800 cursor-not-allowed opacity-50' : 'bg-gray-700 hover:bg-gray-600'}`}>
               <div className="flex">{t.colors.map((c,i) => (
                 <div key={i} style={{background:c}} className="w-3 h-3 rounded-full" />
               ))}</div>
@@ -44,6 +51,14 @@ export default function Sidebar() {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Partial Randomize */}
+      <div className="flex gap-2">
+        <button onClick={() => store.randomizeStructure()}
+          className="flex-1 py-2 bg-violet-600 hover:bg-violet-500 rounded text-sm font-medium">
+          🎲 重算构图
+        </button>
       </div>
 
       {/* Seed */}
